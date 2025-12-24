@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Tu tienda de tecnología</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --secondary: #1e40af;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --bg: #f9fafb;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --text-secondary: #6b7280;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: var(--surface);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #d97706;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Products Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .rating {
+            color: var(--accent);;
+            font-size: 0.9rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 4rem 2rem;
+            border-radius: 8px;
+        }
+
+        .newsletter h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--surface);
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--text);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">🛍️ TechStore</div>
+            <nav class="nav">
+                <a href="#products" onclick="trackEvent('nav_click', {section: 'products'})">Productos</a>
+                <a href="#about" onclick="trackEvent('nav_click', {section: 'about'})">Acerca de</a>
+                <a href="#contact" onclick="trackEvent('nav_click', {section: 'contact'})">Contacto</a>
+                <div class="cart-icon" onclick="trackEvent('cart_view', {}); openCart()">
+                    🛒
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Bienvenido a TechStore</h1>
+        <p>Encuentra los mejores productos de tecnología al mejor precio</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar productos..." id="search-input">
+            <button class="btn btn-primary" onclick="trackEvent('search', {query: document.getElementById('search-input').value}); performSearch()">Buscar</button>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <div class="container">
+        <h2 class="section-title" id="products">Nuestros Productos</h2>
+        <div class="products" id="products-grid">
+            <!-- Products will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="container">
+        <div class="newsletter">
+            <h2>Suscríbete a nuestro newsletter</h2>
+            <p>Recibe ofertas exclusivas y noticias de nuevos productos</p>
+            <div class="newsletter-form">
+                <input type="email" placeholder="Tu correo electrónico" id="newsletter-email">
+                <button class="btn btn-secondary" onclick="trackEvent('newsletter_signup', {email: document.getElementById('newsletter-email').value}); subscribeNewsletter()">Suscribirse</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <h3>Contacto</h3>
+        <p>Email: info@techstore.com</p>
+        <p>Teléfono: +57 300 123 4567</p>
+        <p>&copy; 2025 TechStore. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <button class="btn btn-success" style="width: 100%; margin-top: 1rem;" onclick="trackEvent('purchase', {total_items: cartItems.length}); checkout()">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <h2 id="modal-product-name"></h2>
+            <p id="modal-product-description"></p>
+            <p><strong>Precio:</strong> $<span id="modal-product-price"></span></p>
+            <div class="form-group">
+                <label>Cantidad:</label>
+                <input type="number" id="quantity" min="1" value="1">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="addProductToCart()">Agregar al Carrito</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample products
+        const products = [
+            { id: 1, name: 'Laptop ProBook', price: 1299, description: 'Laptop potente para profesionales', emoji: '💻' },
+            { id: 2, name: 'iPhone 15 Pro', price: 999, description: 'Último modelo de Apple', emoji: '📱' },
+            { id: 3, name: 'AirPods Pro', price: 249, description: 'Auriculares inalámbricos premium', emoji: '🎧' },
+            { id: 4, name: 'iPad Air', price: 599, description: 'Tablet versátil y potente', emoji: '📱' },
+            { id: 5, name: 'Apple Watch', price: 399, description: 'Reloj inteligente avanzado', emoji: '⌚' },
+            { id: 6, name: 'Magic Mouse', price: 79, description: 'Ratón inalámbrico multitáctil', emoji: '🖱️' },
+        ];
+
+        let cartItems = [];
+        let selectedProduct = null;
+
+        // Initialize products grid
+        function initProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.emoji}</div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-price">
+                            <span class="price">$${product.price}</span>
+                            <span class="rating">⭐ 4.8 (120)</span>
+                        </div>
+                        <button class="btn btn-primary add-to-cart-btn" onclick="openProductModal(${product.id})">Ver detalles</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Track events for GA4
+        function trackEvent(eventName, eventData = {}) {
+            console.log(`[GA4 EVENT] ${eventName}:`, eventData);
+            // Este evento será capturado por Google Tag Manager
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    'event': eventName,
+                    ...eventData
+                });
+            }
+        }
+
+        // Product modal
+        function openProductModal(productId) {
+            selectedProduct = products.find(p => p.id === productId);
+            document.getElementById('modal-product-name').textContent = selectedProduct.name;
+            document.getElementById('modal-product-description').textContent = selectedProduct.description;
+            document.getElementById('modal-product-price').textContent = selectedProduct.price;
+            document.getElementById('quantity').value = 1;
+            document.getElementById('product-modal').classList.add('active');
+            trackEvent('view_item', { product_id: productId, product_name: selectedProduct.name, price: selectedProduct.price });
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('active');
+        }
+
+        // Cart functions
+        function addProductToCart() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const item = { ...selectedProduct, quantity };
+            cartItems.push(item);
+            updateCartCount();
+            trackEvent('add_to_cart', { product_id: selectedProduct.id, product_name: selectedProduct.name, quantity: quantity, price: selectedProduct.price });
+            closeProductModal();
+            alert('Producto agregado al carrito!');
+        }
+
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = cartItems.length;
+        }
+
+        function openCart() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            if (cartItems.length === 0) {
+                cartItemsDiv.innerHTML = '<p>Tu carrito está vacío</p>';
+            } else {
+                cartItemsDiv.innerHTML = cartItems.map((item, index) => `
+                    <div style="padding: 1rem 0; border-bottom: 1px solid #ddd;">
+                        <strong>${item.name}</strong><br>
+                        Cantidad: ${item.quantity} x $${item.price} = $${item.quantity * item.price}
+                        <button class="btn btn-secondary" style="margin-top: 0.5rem; font-size: 0.8rem;" onclick="removeFromCart(${index})">Eliminar</button>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('cart-modal').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').classList.remove('active');
+        }
+
+        function removeFromCart(index) {
+            trackEvent('remove_from_cart', { product_name: cartItems[index].name });
+            cartItems.splice(index, 1);
+            updateCartCount();
+            openCart();
+        }
+
+        function checkout() {
+            trackEvent('begin_checkout', { items_count: cartItems.length });
+            alert('Gracias por tu compra! (Simulado)');
+            cartItems = [];
+            updateCartCount();
+            closeCart();
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value;
+            trackEvent('search_products', { search_term: query });
+            alert(`Buscando: ${query}`);
+        }
+
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            trackEvent('newsletter_subscription', { email: email });
+            alert('¡Gracias por suscribirse!');
+            document.getElementById('newsletter-email').value = '';
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initProducts();
+            trackEvent('page_view', { page_title: 'Home', page_location: window.location.href });
+        });
+
+        // Track scroll events
+        document.addEventListener('scroll', () => {
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            if (scrollPercent > 50 && !window.scroll50Tracked) {
+                window.scroll50Tracked = true;
+                trackEvent('scroll_50_percent', {});
+            }
+        });
+    </script>
+</body>
+</html>
